@@ -73,7 +73,7 @@ public class House {
         }
         else{
             HouseException me = new HouseException();
-            me.setMessage("Must be longer than two characters");
+            me.setMessage("Seller name must be longer than two characters");
             throw(me);
         }
     }

@@ -1,32 +1,32 @@
 /**
  * 
- * @author    David Pavlicek
+ * @author David Pavlicek
  */
-public class HNode{
-    public HNode(){
+public class HNode {
+    private House house;
+    private HNode nextHouse = null;
+
+    public HNode() {
 
     }
 
-    public void setNext(HNode n){
-
+    public void setNext(HNode n) {
+        this.nextHouse = n;
     }
 
-    public HNode getNext(){
-        return null;
-        
+    public HNode getNext() {
+        return this.nextHouse;
     }
 
-    public void setHouse(House h){
-
+    public void setHouse(House h) {
+        this.house = h;
     }
 
-    public House getHouse(){
-        return null;
-
+    public House getHouse() {
+        return this.house;
     }
 
-    public String toString(){
-        return null;
-
+    public String toString() {
+        return "";
     }
 }
