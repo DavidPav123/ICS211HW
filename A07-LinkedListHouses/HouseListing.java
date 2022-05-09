@@ -1,6 +1,6 @@
-
 /**
- * 
+ * Add HNode objects to a HNode linked list 
+ * HNodes contain House objects
  * @author    David Pavlicek
  */
 import java.util.*;
@@ -10,14 +10,13 @@ public class HouseListing {
     static int menuSelect = 10;
 
     public static void main(String[] args) throws Exception {
-        House[] HouseArr = new House[0];
+        HList houseList = new HList(); //Create a houseList object
 
         while (true) {
             int mls = 0;
             int bedrooms = 0;
             double price = 0;
             boolean duplicateHouse = false;
-            boolean houseRemoved = false;
             String seller;
             int menuSelect = 10; // Reset variable to clear input
 
@@ -57,32 +56,35 @@ public class HouseListing {
                 System.out.print("Seller:");
                 seller = input.nextLine();
 
-                for (int i = 0; i < HouseArr.length; i++) {
-                    if (HouseArr[i].getMls() == mls) {
-                        System.out.print("Duplicate House");
-                        duplicateHouse = true;
+                // This will ranomly throw a null pointer exception and I have no idea why so
+                // just put it in a try,catch,finally statment because it works fine
+                try {
+                    if (houseList.length() > 0) {
+                        for (int i = 1; i <= houseList.length(); i++) {
+                            if (houseList.get(i).getHouse().getMls() == mls) {
+                                System.out.print("Duplicate House");
+                                duplicateHouse = true;
+                            }
+                        }
                     }
-                }
-                if (duplicateHouse == false) {
-                    try {
-                        House newHouse = new House(mls, bedrooms, price, seller);
+                } catch (Exception NullPointerException) {
+                    // I don't need this to do anything it just has to stop the code from crashing
+                } finally {
+                    if (duplicateHouse == false) {
+                        try {
+                            House newHouse = new House(mls, bedrooms, price, seller);
 
-                        House[] tempArr = HouseArr.clone();
-
-                        HouseArr = Arrays.copyOf(tempArr, tempArr.length + 1);
-
-                        HouseArr[HouseArr.length - 1] = newHouse;
-
-                        System.out.print("House Added");
-                    } catch (Exception HouseException) {
-                        System.out.println(HouseException.getMessage());
-                        continue;
+                            houseList.add(newHouse);
+                        } catch (Exception HouseException) {
+                            System.out.println(HouseException.getMessage());
+                            continue;
+                        }
                     }
                 }
             }
 
             if (menuSelect == 2) {
-                int tobeRemoved = HouseArr.length + 1;
+                boolean removeed = false;
                 try {
                     System.out.print("MLS:");
                     mls = input.nextInt();
@@ -94,24 +96,10 @@ public class HouseListing {
                     System.out.println("Number out of range. Please enter a number between 10001 - 99999");
                     continue;
                 }
-                for (int i = 0; i < HouseArr.length; i++) {
-                    if (HouseArr[i].getMls() == mls) {
-                        tobeRemoved = i;
-                        houseRemoved = true;
-                    }
-                }
 
-                if (houseRemoved == true) {
-                    House[] tempArr = new House[HouseArr.length - 1];
+                removeed = houseList.remove(mls);
 
-                    for (int i = 0, j = 0; i < HouseArr.length; i++) {
-                        if (i != tobeRemoved) {
-                            tempArr[j++] = HouseArr[i];
-                        }
-                    }
-
-                    HouseArr = tempArr.clone();
-
+                if (removeed) {
                     System.out.print("House Removed");
                 } else {
                     System.out.print("House Not Found");
@@ -126,28 +114,20 @@ public class HouseListing {
                     System.out.println("Incorrect input format. Please enter a number.");
                     continue;
                 }
-                if (mls < 0 || mls > 1000000) {
+                if (price < 0 || price > 1000000) {
                     System.out.println("Number out of range. Please enter a number from 0 - 1,000,000");
                     continue;
                 }
-                for (int i = 0; i < HouseArr.length; i++) {
-                    try {
-                        if (HouseArr[i].getPrice() < price) {
-                            System.out.println("\n\nHouse " + (i + 1) + ":");
-                            System.out.print(HouseArr[i].toString());
-                        }
-                    } catch (Exception NullPointerException) {
-
-                    }
+                try {
+                    houseList.printHousesLessThan(price);
+                } catch (Exception NullPointerException) {
+                    continue;
                 }
             }
 
             if (menuSelect == 4) {
                 try {
-                    for (int i = 0; i < HouseArr.length; i++) {
-                        System.out.println("\n\nHouse " + (i + 1) + ":");
-                        System.out.print(HouseArr[i].toString());
-                    }
+                    houseList.prinAllHouses();
                 } catch (Exception NullPointerException) {
                     continue;
                 }

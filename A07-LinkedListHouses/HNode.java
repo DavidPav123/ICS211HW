@@ -1,5 +1,8 @@
 /**
- * 
+ * Creating HNode objects that go into a HNode List
+ * HNode objects contain house objects and impliment functionality
+ * to make the HNode Linked list work such as having a pointer
+ * to the next node in the list
  * @author David Pavlicek
  */
 public class HNode {
@@ -27,6 +30,6 @@ public class HNode {
     }
 
     public String toString() {
-        return "";
+        return house.toString();
     }
 }
